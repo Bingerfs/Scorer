@@ -1,11 +1,9 @@
 
 public class TennisGame2 implements TennisGame
 {
-    public int P1point = 0;
-    public int P2point = 0;
-    
-    public String P1res = "";
-    public String P2res = "";
+    public int Player1point = 0;
+    public int Player2point = 0;
+
     private String player1Name;
     private String player2Name;
 
@@ -19,59 +17,55 @@ public class TennisGame2 implements TennisGame
         score = normal(score);
         score = tie(score);
         score = deuce(score);
-        
-
-
-        
         score = advantage(score);
-        
         score = win(score);
         return score;
     }
 
 	private String normal(String score) {
-        if(P2point < 4 && P1point < 4)
-            P2res=getLiteral(P2point);
-            P1res=getLiteral(P1point);
-            score = P1res + "-" + P2res;
+        String P1Literal="";
+        String P2Literal="";
+        if(Player2point < 4 && Player1point < 4)
+            P2Literal=getLiteral(Player2point);
+            P1Literal=getLiteral(Player1point);
+            score = P1Literal + "-" + P2Literal;
 		return score;
 	}
 
 	private String win(String score) {
-		if (P1point>=4 && P2point>=0 && (P1point-P2point)>=2)
-        {
+		if (isWinnerOver(Player1point, Player2point))
             score = "Win for player1";
-        }
-        if (P2point>=4 && P1point>=0 && (P2point-P1point)>=2)
-        {
+        if (isWinnerOver(Player2point, Player1point))
             score = "Win for player2";
-        }
 		return score;
 	}
 
-	private String advantage(String score) {
-		if (P1point > P2point && P2point >= 3)
-        {
+    private boolean isWinnerOver(int player1point, int player2point) {
+        return player1point >= 4 && player2point >= 0 && (player1point - player2point) >= 2;
+    }
+
+    private String advantage(String score) {
+		if (hasAdvantageOver(Player1point, Player2point))
             score = "Advantage player1";
-        }
         
-        if (P2point > P1point && P1point >= 3)
-        {
+        if (hasAdvantageOver(Player2point, Player1point)) 
             score = "Advantage player2";
-        }
 		return score;
 	}
 
-	private String deuce(String score) {
-		if (P1point==P2point && P1point>=3)
+    private boolean hasAdvantageOver(int player1point, int player2point) {
+        return player1point > player2point && player2point >= 3;
+    }
+
+    private String deuce(String score) {
+		if (Player1point== Player2point && Player1point>=3)
             score = "Deuce";
 		return score;
 	}
 
 	private String tie(String score) {
-		if (P1point == P2point && P1point < 4)
-        {
-            score = getLiteral(P1point);
+		if (Player1point == Player2point && Player1point < 4) {
+            score = getLiteral(Player1point);
             score += "-All";
         }
 		return score;
@@ -93,8 +87,7 @@ public class TennisGame2 implements TennisGame
 
     public void SetP1Score(int number){
         
-        for (int i = 0; i < number; i++)
-        {
+        for (int i = 0; i < number; i++) {
             P1Score();
         }
             
@@ -102,19 +95,18 @@ public class TennisGame2 implements TennisGame
     
     public void SetP2Score(int number){
         
-        for (int i = 0; i < number; i++)
-        {
+        for (int i = 0; i < number; i++) {
             P2Score();
         }
             
     }
     
     public void P1Score(){
-        P1point++;
+        Player1point++;
     }
     
     public void P2Score(){
-        P2point++;
+        Player2point++;
     }
 
     public void wonPoint(String player) {
